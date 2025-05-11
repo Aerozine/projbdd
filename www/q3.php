@@ -61,7 +61,7 @@
                 /* la table service a un id en autocincrement
                    mais vu qu'on aura besoin de l'id pour les excpetions on calcule l'id et on l'insère dna sune même transaction   
                 */
-                $c = $bdd->query('SELECT COUNT(*) AS COUNT FROM service')->fetch();
+                $c = $bdd->query('SELECT max(serv_id) AS COUNT FROM service')->fetch();
                 $id = $c['COUNT']+1;
                 $statement_service->bindParam(':ID', $id, PDO::PARAM_INT);
                 
