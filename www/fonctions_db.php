@@ -9,6 +9,7 @@ function connexion()
 			array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\'', PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
      */
     $ma_db = new PDO('mysql:host=db;dbname=group06;charset=utf8', 'group06', 'secret');
+    $ma_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $ma_db;
 }
 function affichetempsmoyen($ma_db){
@@ -25,8 +26,8 @@ function affichetempsmoyen($ma_db){
  	$return.="</THEAD>";
  	foreach ($tab as $ligne) {
  		$return.="\n<TR>";
- 		$return.="<TD>".$ligne['iti_nom']."</TD>";
- 		$return.="<TD>".$ligne['trajet_id']."</TD>";
+ 		$return.="<TD>".htmlentities($ligne['iti_nom'])."</TD>";
+ 		$return.="<TD>".htmlentities($ligne['trajet_id'])."</TD>";
  		$return.="<TD>".$ligne['temps_arret_moyen']."</TD>";
  		$return.="</TR>";
  	}
@@ -47,7 +48,7 @@ function recherche_service($ma_db, $dateform){
  	$return.="</THEAD>";
  	foreach ($tab as $ligne) {
  		$return.="\n<TR>";
- 		$return.="<TD>".$ligne['nom']."</TD>";
+ 		$return.="<TD>".htmlentities($ligne['nom'])."</TD>";
  		$return.="</TR>";
  	}
  	$return.="\n</TABLE>";
@@ -85,8 +86,8 @@ function select_gare($ma_db,$gare,$nb){
  	$return.="</THEAD>";
  	foreach ($tab as $ligne) {
  		$return.="\n<TR>";
- 		$return.="<TD>".$ligne['arr_nom']."</TD>";
- 		$return.="<TD>".$ligne['serv_nom']."</TD>";
+ 		$return.="<TD>".htmlentities($ligne['arr_nom'])."</TD>";
+ 		$return.="<TD>".htmlentities($ligne['serv_nom'])."</TD>";
  		$return.="<TD>".$ligne['nb_train']."</TD>";
  		$return.="<TD>".$ligne['nb_arrivee']."</TD>";
  		$return.="<TD>".$ligne['nb_depart']."</TD>";
@@ -119,7 +120,7 @@ function select_arret($ma_db){
  	foreach ($tab as $ligne) {
  		$return.="\n<TR>";
  		$return.="<TD>".$ligne['arr_id']."</TD>";
- 		$return.="<TD>".$ligne['arr_nom']."</TD>";
+ 		$return.="<TD>".htmlentities($ligne['arr_nom'])."</TD>";
  		$return.="<TD>".$ligne['arr_latitude']."</TD>";
  		$return.="<TD>".$ligne['arr_longitude']."</TD>";
  		$return.="<TD>";
@@ -143,7 +144,7 @@ function update_arret($ma_db,$arretID){
  	$tab=$instru->fetchall();
  	foreach ($tab as $ligne) {
  		$arr_id=$ligne['arr_id'];
- 		$arr_nom=$ligne['arr_nom'];
+ 		$arr_nom=htmlentities($ligne['arr_nom']);
  		$arr_latitude=$ligne['arr_latitude'];
  		$arr_longitude=$ligne['arr_longitude'];
 
@@ -159,15 +160,61 @@ function update_arret($ma_db,$arretID){
      <BR>
      Nom : <input type='text'  name='arr_nom' value='$arr_nom' >
      <BR>
-     Latitude :<input type='number' name='arr_latitude'  value='$arr_longitude' min='2.51357303225' max ='6.15665815596'>
+     Latitude :<input type='number' name='arr_longitude'  value='$arr_longitude' min='2.51357' max ='6.15666' step='0.00001'>
      <BR>
-     Longitude :<input type='number' name='arr_longitude' value='$arr_latitude' min='49.5294835476' max='51.4750237087'>
+     Longitude :<input type='number' name='arr_latitude' value='$arr_latitude' min='49.52948' max='51.47502' step='0.00001'>
      <BR>
      <input type='submit' name='action2'>";
      return $html1;
 }
 function maj_arret($ma_db){
+	$sql="update arret ";
+	$set= " set ";
+	$arr_id=$_POST['arr_id'];
+	$arr_nom=$_POST['arr_nom'];
+	$arr_latitude=$_POST['arr_latitude'];
+	$arr_longitude=$_POST['arr_longitude'];
+	$num=$_POST['arr_idA'] ; // pour la clause where
+	$and=false;
+	
 
+if($_POST['arr_id'] != $_POST['arr_idA']){ // création de la clause set
+	$set.=" arr_id=:arr_id ,";
+	$and=true;
+}
+if($_POST['arr_nom'] != $_POST['arr_nomA']){
+	$set.=" arr_nom=:arr_nom ,";
+	$and=true;
+}
+if($_POST['arr_latitude'] != $_POST['arr_latitudeA']){
+	$set.=" arr_latitude=:arr_latitude ,";
+	$and=true;
+}
+if($_POST['arr_longitude'] != $_POST['arr_longitudeA']){
+	$set.=" arr_longitude=:arr_longitude ,";
+    $and=true;
+}
+if( $and){
+	$sql.=substr($set,0,-1); // pour enlever la virgule
+ }
+    $sql.= " where arr_id=:num ;";
+    echo $sql;
+    $instru=$ma_db->prepare($sql);
+
+    if(strpos($sql,":arr_id") !=false){ 
+    	// si passage de paramètre dans le sql
+ 			$instru->bindvalue('arr_id',$arr_id,PDO::PARAM_INT);
+ 			}
+ 	if(strpos($sql,":arr_nom") != false)
+ 			$instru->bindvalue('arr_nom',$arr_nom,PDO::PARAM_STR);
+ 	if(strpos($sql,":arr_latitude")!=false)
+ 			$instru->bindvalue('arr_latitude',$arr_latitude,PDO::PARAM_STR);
+ 		
+ 	if(strpos($sql,":arr_longitude")!=false)
+ 			$instru->bindvalue('arr_longitude',$arr_longitude,PDO::PARAM_STR);
+ 	$instru->bindvalue('num',$num,PDO::PARAM_STR);
+ 	$instru->execute();
+	$html1="Mise à jour effectuée";
+	return $html1;
 }
  ?>
-

@@ -23,10 +23,13 @@ if(isset($_POST["action"])){ // si on arrive via le formulaire
  ?>
 <html>
 <head>
+
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
+	<link rel="stylesheet" href="style/display.css">
+    <title>Recherche de service</title>
 	<form action="q4.php" method="post">
+<p>Entrer la date pour connaitre les services</p>
 		<input type="date" name="date_form">
 		<input type="submit" name='action' value = "Tester">
 	</form>
