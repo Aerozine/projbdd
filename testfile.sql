@@ -76,7 +76,7 @@ CREATE TABLE exception
 /*
 création de 2 triggers pour vérifier que les dates d'excpetions font bien partie de l'intervalle du service associé
 */
-DELIMITER$$
+DELIMITER $
 create procedure erreur_exception(new_date date, new_service int)
 BEGIN
     DECLARE date_debut DATE;
@@ -89,7 +89,7 @@ BEGIN
     if new_date not between date_debut and date_fin then
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'la date de l''exception n''est pas dans l''intervalle du service';
     END IF;
-end$$
+end $
 
 
 CREATE TRIGGER tr_bi_exception_verif_date_exception BEFORE INSERT  ON exception
@@ -97,15 +97,15 @@ FOR EACH ROW
 BEGIN
     call erreur_exception( new.exc_date, new.exc_service);
    
-END$$
+END $
 
 CREATE TRIGGER tr_bu_exception_verif_date_exception BEFORE update  ON exception
 FOR EACH ROW
 BEGIN
     call erreur_exception( new.exc_date, new.exc_service);
    
-END$$
-DELIMITER;
+END $
+DELIMITER ;
 
 DROP TABLE IF EXISTS itineraire;
 CREATE TABLE itineraire

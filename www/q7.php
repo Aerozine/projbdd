@@ -29,7 +29,7 @@
         <select name="choix_supp_itineraire" >
             <?php
                 foreach ($resultats_itineraire as $r){
-                    echo "<option value=\"".$r['id']."\">".$r['itineraire']."</option>";
+                    echo "<option value=\"".$r['id']."\">".htmlentities($r['itineraire'])."</option>";
                 }
             ?>
         </select>
@@ -108,7 +108,7 @@
         <select name="choix_itineraire" >
             <?php
                 foreach ($resultats_itineraire as $r){
-                    echo "<option value=\"".$r['id']."\">".$r['itineraire']."</option>";
+                    echo "<option value=\"".$r['id']."\">".htmlentities($r['itineraire'])."</option>";
                 }
             ?>
         </select>
@@ -160,7 +160,7 @@
                 <select name="service" >
                     <?php
                         foreach ($resultats_service as $r){
-                            echo "<option value=\"".$r['service_id']."\">".$r['service_nom']."</option>";
+                            echo "<option value=\"".$r['service_id']."\">".htmlentities($r['service_nom'])."</option>";
                         }
                     ?>
                 </select><BR><BR>
@@ -175,10 +175,10 @@
                     $nom = $statement_nom->fetch();
                 
                     echo "<label>";
-                    echo "<input type=\"checkbox\" name=\"arrets[$index][id]\" value=\"".$r['arret_id']."\">".$nom['arret_nom'];
+                    echo "<input type=\"checkbox\" name=\"arrets[$index][id]\" value=\"".$r['arret_id']."\">".htmlentities($nom['arret_nom']);
                     echo "</label>";
-                    echo "<input type=\"text\" name=\"arrets[$index][arrivee]\" placeholder=\"Heure d'arrivée\">";
-                    echo "<input type=\"text\" name=\"arrets[$index][depart]\" placeholder=\"Heure de départ\">";
+                    echo "<input type=\"time\" step=\"1\" name=\"arrets[$index][arrivee]\" placeholder=\"Heure d'arrivée\">";
+                    echo "<input type=\"time\" step=\"1\" name=\"arrets[$index][depart]\" placeholder=\"Heure de départ\">";
                     echo "<BR>";
                 }
                 ?>

@@ -198,7 +198,7 @@ if( $and){
 	$sql.=substr($set,0,-1); // pour enlever la virgule
  }
     $sql.= " where arr_id=:num ;";
-    echo $sql;
+    //echo $sql;
     $instru=$ma_db->prepare($sql);
 
     if(strpos($sql,":arr_id") !=false){ 

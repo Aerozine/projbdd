@@ -17,12 +17,20 @@ try{
 		}
 	}
 	else{
-		$_SESSION['html1'] ="<H1> Les arrets</H1>";
+		if(isset($_POST["action2"])){
+			
+			$_SESSION['html1']=maj_arret($ma_db);
+		}
+		else{
+			$_SESSION['html1']="";
+		}	
+		$_SESSION['html1'].="<H1> Les arrets</H1>";
 		$_SESSION['html2']="";
 		$_SESSION['html2']="<form action='q8.php' method='POST'>";
 		$_SESSION['html2'].="<input type='submit' name='action'>";
 		$_SESSION['html2'].=select_arret($ma_db);
 		$_SESSION['html2'].="</form>";
+		
 	}
 
 }
@@ -36,7 +44,7 @@ catch (Exception $ex) {
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="style/display.css">
-	<title>Utilisateurs de ma base de données </title>
+	<title>Arrêts </title>
 </head>
 <body>
 	
