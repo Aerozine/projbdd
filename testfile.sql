@@ -75,7 +75,7 @@ CREATE TABLE exception
 
 /*
 création de 2 triggers pour vérifier que les dates d'excpetions font bien partie de l'intervalle du service associé
-*/
+
 DELIMITER $$
 create procedure erreur_exception(new_date date, new_service int)
 BEGIN
@@ -95,18 +95,18 @@ end $$
 CREATE TRIGGER tr_bi_exception_verif_date_exception BEFORE INSERT  ON exception
 FOR EACH ROW
 BEGIN
-    call erreur_exception( NEW.exc_date, new.exc_service);
+    call erreur_exception( new.exc_date, new.exc_service);
    
 END $$
 
 CREATE TRIGGER tr_bu_exception_verif_date_exception BEFORE update  ON exception
 FOR EACH ROW
 BEGIN
-    call erreur_exception( NEW.exc_date, new.exc_service);
+    call erreur_exception( new.exc_date, new.exc_service);
    
 END $$
 DELIMITER ;
-
+*/
 DROP TABLE IF EXISTS itineraire;
 CREATE TABLE itineraire
 (
