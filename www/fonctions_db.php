@@ -196,8 +196,7 @@ if($_POST['arr_longitude'] != $_POST['arr_longitudeA']){
 }
 if( $and){
 	$sql.=substr($set,0,-1); // pour enlever la virgule
- }
-    $sql.= " where arr_id=:num ;";
+   $sql.= " where arr_id=:num ;";
     //echo $sql;
     $instru=$ma_db->prepare($sql);
 
@@ -215,6 +214,10 @@ if( $and){
  	$instru->bindvalue('num',$num,PDO::PARAM_STR);
  	$instru->execute();
 	$html1="Mise à jour effectuée";
+}
+ else{
+ 	$html1="aucune mise à jour à faire";
+ }
 	return $html1;
 }
  ?>

@@ -75,7 +75,6 @@ CREATE TABLE exception
 
 /*
 création de 2 triggers pour vérifier que les dates d'excpetions font bien partie de l'intervalle du service associé
-*/
 DELIMITER #
 create procedure erreur_exception(new_date date, new_service int)
 BEGIN
@@ -107,6 +106,7 @@ BEGIN
 END #
 DELIMITER ;
 
+*/
 DROP TABLE IF EXISTS itineraire;
 CREATE TABLE itineraire
 (
